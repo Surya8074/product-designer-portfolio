@@ -1,0 +1,21 @@
+const projectData={comski:{title:'COMSKI',intro:'An AI-assisted communication product focused on turning conversations into clearer feedback and more actionable growth.',problem:'Communication products can surface a lot of information without helping people understand what to do next.',ux:'Use progressive disclosure: show the most important feedback first, then let users explore detail when it becomes relevant.',design:'A calm, focused interaction model with clear feedback moments, visible progress and a strong sense of next action.'},genesis:{title:'GENESIS',intro:'A SaaS testing experience for making execution, coverage, defects and reporting easier to understand.',problem:'Testing workflows often spread important signals across dense tables, states and reports.',ux:'Create a data-first information architecture that helps users move from overview to the exact test, defect or report they need.',design:'Strong hierarchy, clear states and compact decision-making surfaces that keep complex testing work scannable.'},laundromart:{title:'LAUNDROMART',intro:'An operations and inventory dashboard designed to help teams understand stock and daily work at a glance.',problem:'Operational teams need to track many inventory records while still seeing what needs attention now.',ux:'Prioritize today’s work, exceptions and inventory health before deeper records and secondary detail.',design:'A compact dashboard language with consistent status, grouping and clear drill-down paths.'},teachgrade:{title:'TEACH GRADE',intro:'An AI-first education workflow for helping teachers create assessments and turn classroom activity into useful summaries.',problem:'Creating tests and class summaries can be repetitive, while AI output still needs teacher control and review.',ux:'Start with teacher intent, then make generation, review, editing and sharing explicit and reversible.',design:'AI output is presented as editable work rather than a black box, keeping teachers in control of the final result.'}};
+
+const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('is-visible');observer.unobserve(e.target)}}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+document.querySelectorAll('.project-card').forEach(card=>{card.addEventListener('click',()=>openCase(card.dataset.project));const btn=card.querySelector('.text-button');btn?.addEventListener('click',e=>{e.stopPropagation();openCase(card.dataset.project)})});
+
+const modal=document.getElementById('caseModal');
+const title=document.getElementById('modalTitle');
+const intro=document.getElementById('modalIntro');
+const problem=document.getElementById('modalProblem');
+const ux=document.getElementById('modalUx');
+const design=document.getElementById('modalDesign');
+function openCase(key){const p=projectData[key];if(!p)return;title.textContent=p.title;intro.textContent=p.intro;problem.textContent=p.problem;ux.textContent=p.ux;design.textContent=p.design;modal.classList.add('open');modal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden'}
+function closeCase(){modal.classList.remove('open');modal.setAttribute('aria-hidden','true');document.body.style.overflow=''}
+document.querySelector('.modal-close').addEventListener('click',closeCase);document.querySelector('.modal-backdrop').addEventListener('click',closeCase);document.addEventListener('keydown',e=>{if(e.key==='Escape')closeCase()});
+
+const dot=document.querySelector('.cursor-dot');const ring=document.querySelector('.cursor-ring');window.addEventListener('mousemove',e=>{dot.style.left=`${e.clientX}px`;dot.style.top=`${e.clientY}px`;ring.style.left=`${e.clientX}px`;ring.style.top=`${e.clientY}px`});
+document.querySelectorAll('a,button,.project-card').forEach(el=>{el.addEventListener('mouseenter',()=>{ring.style.width='48px';ring.style.height='48px'});el.addEventListener('mouseleave',()=>{ring.style.width='30px';ring.style.height='30px'})});
+
+document.querySelector('.footer-bottom span:last-child').addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
